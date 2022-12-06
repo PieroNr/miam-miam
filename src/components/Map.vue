@@ -8,6 +8,7 @@ import L from "leaflet";
 import benoit from "@/assets/img/avatar1.png";
 import akim from "@/assets/img/avatar2.png";
 import sophie from "@/assets/img/avatar3.png";
+import food from "@/assets/img/food.png"
 
 
 export default {
@@ -36,6 +37,10 @@ export default {
       iconUrl: akim,
       iconSize:     [35, 35],
     });
+    var foodIcon = L.icon({
+      iconUrl: food,
+      iconSize: [35, 35],
+    });
 
     var avatar3 = L.icon({
       iconUrl: sophie,
@@ -45,6 +50,16 @@ export default {
     L.marker([48.84, 2.35], {icon: avatar2}).addTo(this.map);
     L.marker([48.85, 2.37], {icon: avatar3}).addTo(this.map);
 
+    // La Table de Colette
+    L.marker([48.84, 2.34], {icon: foodIcon}).addTo(this.map);
+    // 6 New York
+    L.marker([48.86, 2.29], {icon: foodIcon}).addTo(this.map);
+    // Sens Uniques
+    L.marker([48.88, 2.33], {icon: foodIcon}).addTo(this.map);
+    // Mensae
+    L.marker([48.87, 2.38], {icon: foodIcon}).addTo(this.map);
+    // Polpo
+    L.marker([48.90, 2.28], {icon: foodIcon}).addTo(this.map);
   },
   onBeforeUnmount() {
     if (this.map) {
