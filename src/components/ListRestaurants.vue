@@ -1,0 +1,118 @@
+<script setup lang="ts">
+</script>
+
+<template>
+    <div class="list">
+      <h3>Liste des restaurants</h3>
+      <label class="rad-label">
+        <input type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">La Table de Colette</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">Sens Uniques</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">6 New york</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">Mensae</div>
+      </label>
+      <label class="rad-label">
+        <input type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">Polpo</div>
+      </label>
+    </div>
+</template>
+
+<style scoped>
+.list {
+  width: 20vw;
+  height: 93vh;
+  padding-right: 2rem;
+}
+
+h3 {
+  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.rad-label {
+  display: flex;
+  align-items: center;
+
+  border-radius: 100px;
+  padding: 14px 16px;
+  margin: 10px 0;
+
+  cursor: pointer;
+  transition: .3s;
+}
+
+.rad-label:hover,
+.rad-label:focus-within {
+  background: hsla(0, 0%, 80%, .14);
+}
+
+.rad-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  z-index: -1;
+}
+
+.rad-design {
+  width: 22px;
+  height: 22px;
+  border-radius: 100px;
+
+  background: linear-gradient(to right bottom, hsl(189, 97%, 62%), hsl(278, 85%, 54%));
+  position: relative;
+}
+
+.rad-design::before {
+  content: '';
+
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+
+  background: hsl(0, 0%, 90%);
+  transform: scale(1.1);
+  transition: .3s;
+}
+
+.rad-input:checked+.rad-design::before {
+  transform: scale(0);
+}
+
+.rad-text {
+  color: hsl(0, 0%, 67%);
+  margin-left: 14px;
+  /* letter-spacing: 3px; */
+  /* text-transform: uppercase; */
+  font-size: 18px;
+  font-weight: 400;
+
+  transition: .3s;
+}
+
+.rad-input:checked~.rad-text {
+  color: hsl(0, 0%, 8%);
+}
+</style>

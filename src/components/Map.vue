@@ -1,6 +1,8 @@
 <template>
-  <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à {{ convertTime((endTime * 60 - dt["Time"])/60) }}</p>
-  <div id="mapContainer"></div>
+  <div>
+    <!-- <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à {{ convertTime((endTime * 60 - dt["Time"])/60) }}</p> -->
+    <div id="mapContainer"></div>
+  </div>
 </template>
 
 <script>
@@ -181,7 +183,7 @@ export default {
 
 <style scoped>
 #mapContainer {
-  width: 100vw;
-  height: 100vh;
+  width: 50vw;
+  height: 93vh;
 }
 </style>
