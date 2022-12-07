@@ -1,7 +1,13 @@
 <template>
-    <div style="display: flex; flex-direction: column">
-    <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à
+    <div style="display: flex; flex-direction: column, position: relative">
+    <div class="absolute-text">
+      <div class="flex">
+        <img class="icon" src="@/assets/img/clock.png" alt="">
+        <h3>RDV à 13:30</h3>
+      </div>
+      <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à
       {{ convertTime((endTime * 60 - dt["Time"]) / 60) }}</p>
+    </div>
     <div id="mapContainer"></div>
     </div>
 
@@ -241,8 +247,39 @@ export default {
 
 <style scoped>
 #mapContainer {
+  width: 58vw;
+  height: 100vh;
   z-index: 1;
-  width: 50vw;
-  height: 93vh;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+h3 {
+  /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+
+.absolute-text {
+  position: absolute;
+  z-index: 10;
+  bottom: 32px;
+  left: 32px;
+  width: 30%;
+  background-color: white;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  padding: 16px
 }
 </style>

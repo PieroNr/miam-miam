@@ -1,25 +1,36 @@
 
 
 <template>
-    <div v-if="listResto && listUsersResto" class="list">
-      <h3>Liste des restaurants</h3>
-      <label v-for="resto in listResto" class="rad-label">
-        <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
-        <div class="rad-design"></div>
-        <div class="rad-text">{{ resto._name }}</div>
-      </label>
-      <button v-on:click="showModal">Ajouter Resto</button>
-      <div class="modal">
-        <div class="modal-content">
-          <span v-on:click="closeModal" class="close-btn">&times;</span>
-          <input type="text" v-model="newResto.name" placeholder="Nom" />
-          <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
-          <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
-          <button v-on:click="addResto">Ajouter Resto</button>
+  <div v-if="listResto && listUsersResto" class="list">
+    <h3>Liste des restaurants</h3>
+    <label v-for="resto in listResto" class="rad-label">
+      <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
+      <div class="rad-design"></div>
+      <div class="rad-text">{{ resto._name }}</div>
+    </label>
+    
+    <button v-on:click="showModal" class="button">
+      <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+      <span class="button-text">Ajouter un restaurant</span>
+    </button>
+    <div class="modal">
+      <div class="modal-content">
+        <span v-on:click="closeModal" class="close-btn">&times;</span>
+        <input type="text" v-model="newResto.name" placeholder="Nom" />
+        <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
+        <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
+        <button v-on:click="addResto">Ajouter Resto</button>
 
-        </div>
       </div>
     </div>
+    <div class="active-user">
+      <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
+      <div>
+        <p class="active-user__name">Benoît CHEVALLIER</p>
+        <p>Aucun restaurant</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -95,9 +106,12 @@ export default {
 }
 
 .list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 20vw;
   height: 93vh;
-  padding-right: 2rem;
+  padding: 2rem;
 }
 
 h3 {
@@ -114,7 +128,7 @@ h3 {
   align-items: center;
 
   border-radius: 100px;
-  padding: 14px 16px;
+  padding: 12px 12px;
   margin: 10px 0;
 
   cursor: pointer;
@@ -167,13 +181,59 @@ h3 {
   margin-left: 14px;
   /* letter-spacing: 3px; */
   /* text-transform: uppercase; */
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 600;
 
   transition: .3s;
 }
 
 .rad-input:checked~.rad-text {
   color: hsl(0, 0%, 8%);
+}
+
+.active-user {
+  display: flex;
+  align-items: center;
+  background: hsla(0, 0%, 80%, .14);
+  margin: 10px 0;
+  border-radius: 24px;
+  padding: 18px;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.active-user__name {
+  font-weight: 700;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.icon-avatar {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 12px;
+  margin: 16px 0;
+  cursor: pointer;
+  background: none;
+}
+
+.icon-plus {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+
+.button-text {
+  font-size: 13px;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 </style>
