@@ -3,9 +3,9 @@
     <div class="absolute-text">
       <div class="flex">
         <img class="icon" src="@/assets/img/clock.png" alt="">
-        <h3>RDV à 13:30</h3>
+        <h3>RDV à {{ convertTime(endTime) }}</h3>
       </div>
-      <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à
+      <p v-for="dt in listDistanceTime">{{ dt["User"]._FirstName }} doit partir à
       {{ convertTime((endTime * 60 - dt["Time"]) / 60) }}</p>
     </div>
     <div id="mapContainer"></div>
