@@ -107,7 +107,7 @@ h3 {
   /* letter-spacing: 3px; */
   /* text-transform: uppercase; */
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
 
   transition: .3s;
 }
