@@ -28,7 +28,7 @@
       <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
       <div>
         <p class="active-user__name">Benoît CHEVALLIER</p>
-        <p>Aucun restaurant</p>
+        <p>{{ selectedResto.name != "" ? selectedResto.name : "Aucun restaurant"}}</p>
       </div>
     </div>
   </div>
