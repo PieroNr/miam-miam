@@ -12,13 +12,15 @@
         <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
       </div>
     </div>
+
+    <button class="button">
+      <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+      <span class="button-text">Ajouter un restaurant</span>
+    </button>
   </div>
 </template>
 
 <script>
-import resto from "@/assets/img/resto.png";
-import flag from "@/assets/img/flag.png";
-
 
 export default {
   name: "ListUsers",
@@ -33,9 +35,9 @@ export default {
 
 <style scoped>
 .list-users {
-  width: 25vw;
-  height: 93vh;
-  padding: 0 0 2rem 2rem;
+  width: 22vw;
+  height: 100vh;
+  padding: 2rem;
 }
 
 h3 {
@@ -61,6 +63,29 @@ h3 {
 .list-users-name {
   font-weight: 600;
   margin-bottom: 6px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 12px;
+  margin: 16px 0;
+  cursor: pointer;
+  background: none;
+}
+
+.icon-plus {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+
+.button-text {
+  font-size: 13px;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .rad-label {

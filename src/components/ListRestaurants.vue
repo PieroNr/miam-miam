@@ -35,8 +35,8 @@
 <style scoped>
 .list {
   width: 20vw;
-  height: 93vh;
-  padding-right: 2rem;
+  height: 100vh;
+  padding: 2rem;
 }
 
 h3 {
