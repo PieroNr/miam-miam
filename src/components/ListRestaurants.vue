@@ -29,14 +29,21 @@
         <div class="rad-design"></div>
         <div class="rad-text">Polpo</div>
       </label>
+      <button class="button">
+        <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+        <span class="button-text">Ajouter un restaurant</span>
+      </button>
     </div>
 </template>
 
 <style scoped>
 .list {
   width: 20vw;
-  height: 93vh;
-  padding-right: 2rem;
+  height: 100vh;
+  padding: 2rem;
+  background-color: white;
+  z-index: 2;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
 h3 {
@@ -114,5 +121,28 @@ h3 {
 
 .rad-input:checked~.rad-text {
   color: hsl(0, 0%, 8%);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 12px;
+  margin: 16px 0;
+  cursor: pointer;
+  background: none;
+}
+
+.icon-plus {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+}
+
+.button-text {
+  font-size: 13px;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 </style>
