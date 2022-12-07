@@ -44,7 +44,7 @@ h3 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 24px;
 }
 
@@ -53,7 +53,7 @@ h3 {
   align-items: center;
 
   border-radius: 100px;
-  padding: 14px 16px;
+  padding: 12px 12px;
   margin: 10px 0;
 
   cursor: pointer;
@@ -76,8 +76,8 @@ h3 {
 }
 
 .rad-design {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 100px;
 
   background: linear-gradient(to right bottom, hsl(189, 97%, 62%), hsl(278, 85%, 54%));
@@ -106,7 +106,7 @@ h3 {
   margin-left: 14px;
   /* letter-spacing: 3px; */
   /* text-transform: uppercase; */
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
 
   transition: .3s;
