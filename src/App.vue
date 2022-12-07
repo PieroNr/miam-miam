@@ -42,10 +42,10 @@ import ListRestaurants from '@/components/ListRestaurants.vue'
 
 <template>
   <div class="container">
-    <!-- <ListRestaurants :listUsersResto="listUsersResto" :listResto="listResto" @created-resto="pushCreatedResto" @update-user-resto="pushUpdateUserResto"></ListRestaurants>
+    <ListRestaurants :listUsersResto="listUsersResto" :listResto="listResto" @created-resto="pushCreatedResto" @update-user-resto="pushUpdateUserResto"></ListRestaurants>
     <Map @getListPersoResto="getListPerso($event)" @getListResto="getListResto($event)" ref="map"></Map>
-    <ListUsers :listUsersResto="listUsersResto"/> -->
-    <LoginView></LoginView>
+    <ListUsers :listUsersResto="listUsersResto"/>
+    <!-- <LoginView></LoginView> -->
   </div>
 
 
