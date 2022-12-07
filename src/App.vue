@@ -2,9 +2,11 @@
 
 import Map from './components/Map.vue'
 import ListUsers from "@/components/ListUsers.vue";
+import ListRestaurants from '@/components/ListRestaurants.vue'
+
 
   export default {
-    components: {Map, ListUsers},
+    components: {ListRestaurants, Map, ListUsers},
     data() {
       return {
         listUsersResto: []
@@ -16,17 +18,19 @@ import ListUsers from "@/components/ListUsers.vue";
       }
     }
   }
-import ListRestaurants from './components/ListRestaurants.vue'
+
 
 </script>
 
 <template>
-  <Map @getListPersoResto="getListPerso($event)"></Map>
-  <ListUsers :listUsersResto="listUsersResto"/>
   <div class="container">
     <ListRestaurants></ListRestaurants>
-    <Map></Map>
+    <Map @getListPersoResto="getListPerso($event)"></Map>
+    <ListUsers :listUsersResto="listUsersResto"/>
   </div>
+
+
+
 </template>
 
 <style scoped>

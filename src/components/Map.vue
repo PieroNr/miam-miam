@@ -1,8 +1,9 @@
 <template>
-
+    <div style="display: flex; flex-direction: column">
     <p v-for="dt in listDistanceTime">Miam à {{ convertTime(endTime) }} : {{ dt["User"]._FirstName }} doit partir à
       {{ convertTime((endTime * 60 - dt["Time"]) / 60) }}</p>
     <div id="mapContainer"></div>
+    </div>
 
 </template>
 
