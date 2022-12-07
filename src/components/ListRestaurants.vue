@@ -3,47 +3,83 @@
 
 <template>
     <div class="list">
-      <h3>Liste des restaurants</h3>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">La Table de Colette</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Sens Uniques</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">6 New york</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Mensae</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Polpo</div>
-      </label>
-      <button class="button">
-        <img class="icon-plus" src="@/assets/img/plus.png" alt="">
-        <span class="button-text">Ajouter un restaurant</span>
-      </button>
+      <div>
+        <h3>Liste des restaurants</h3>
+        <label class="rad-label">
+          <input type="radio" class="rad-input" name="rad">
+          <div class="rad-design"></div>
+          <div class="rad-text">La Table de Colette</div>
+        </label>
+        <label class="rad-label">
+          <input type="radio" class="rad-input" name="rad">
+          <div class="rad-design"></div>
+          <div class="rad-text">Sens Uniques</div>
+        </label>
+        <label class="rad-label">
+          <input type="radio" class="rad-input" name="rad">
+          <div class="rad-design"></div>
+          <div class="rad-text">6 New york</div>
+        </label>
+        <label class="rad-label">
+          <input type="radio" class="rad-input" name="rad">
+          <div class="rad-design"></div>
+          <div class="rad-text">Mensae</div>
+        </label>
+        <label class="rad-label">
+          <input type="radio" class="rad-input" name="rad">
+          <div class="rad-design"></div>
+          <div class="rad-text">Polpo</div>
+        </label>
+        <button class="button">
+          <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+          <span class="button-text">Ajouter un restaurant</span>
+        </button>
+      </div>
+      <div class="active-user">
+        <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
+        <div>
+          <p class="active-user__name">Benoît CHEVALLIER</p>
+          <p>Aucun restaurant</p>
+        </div>
+      </div>
     </div>
+      
 </template>
 
 <style scoped>
 .list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 20vw;
   height: 100vh;
   padding: 2rem;
   background-color: white;
   z-index: 2;
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.active-user {
+  display: flex;
+  align-items: center;
+  background: hsla(0, 0%, 80%, .14);
+  margin: 10px 0;
+  border-radius: 24px;
+  padding: 18px;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.active-user__name {
+  font-weight: 700;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.icon-avatar {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
 }
 
 h3 {

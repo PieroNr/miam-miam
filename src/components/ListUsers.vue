@@ -63,18 +63,6 @@ h3 {
   margin-bottom: 6px;
 }
 
-.rad-label {
-  display: flex;
-  align-items: center;
-
-  border-radius: 100px;
-  padding: 12px 12px;
-  margin: 10px 0;
-
-  cursor: pointer;
-  transition: .3s;
-}
-
 .list-users__item {
   background: hsla(0, 0%, 80%, .14);
   margin: 10px 0;
