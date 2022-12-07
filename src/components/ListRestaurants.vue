@@ -114,12 +114,35 @@ export default {
   padding: 2rem;
 }
 
+.active-user {
+  display: flex;
+  align-items: center;
+  background: hsla(0, 0%, 80%, .14);
+  margin: 10px 0;
+  border-radius: 24px;
+  padding: 18px;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.active-user__name {
+  font-weight: 700;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.icon-avatar {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+}
+
 h3 {
   /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 24px;
 }
 
@@ -151,8 +174,8 @@ h3 {
 }
 
 .rad-design {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 100px;
 
   background: linear-gradient(to right bottom, hsl(189, 97%, 62%), hsl(278, 85%, 54%));
