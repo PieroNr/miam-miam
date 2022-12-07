@@ -1,38 +1,99 @@
-<script setup lang="ts">
-</script>
+
 
 <template>
-    <div class="list">
+    <div v-if="listResto && listUsersResto" class="list">
       <h3>Liste des restaurants</h3>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
+      <label v-for="resto in listResto" class="rad-label">
+        <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
         <div class="rad-design"></div>
-        <div class="rad-text">La Table de Colette</div>
+        <div class="rad-text">{{ resto._name }}</div>
       </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Sens Uniques</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">6 New york</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Mensae</div>
-      </label>
-      <label class="rad-label">
-        <input type="radio" class="rad-input" name="rad">
-        <div class="rad-design"></div>
-        <div class="rad-text">Polpo</div>
-      </label>
+      <button v-on:click="showModal">Ajouter Resto</button>
+      <div class="modal">
+        <div class="modal-content">
+          <span v-on:click="closeModal" class="close-btn">&times;</span>
+          <input type="text" v-model="newResto.name" placeholder="Nom" />
+          <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
+          <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
+          <button v-on:click="addResto">Ajouter Resto</button>
+
+        </div>
+      </div>
     </div>
 </template>
 
+<script>
+import Restaurant from "@/assets/script/Restaurant";
+
+export default {
+  name: "ListRestaurants",
+  props: {listResto: [], listUsersResto: []},
+  data() {
+    return {
+      newResto: new Restaurant("", []),
+      selectedResto: new Restaurant("", [])
+
+    }
+
+  },
+  methods: {
+    changeSelectedResto(){
+      this.listUsersResto.forEach((userResto, index) => {
+        if(userResto["User"]._FirstName == "Benoit"){
+          this.listUsersResto[index]["Resto"] = this.selectedResto
+          this.$emit('updateUserResto', this.listUsersResto)
+          return
+        }
+
+      })
+    },
+    showModal(){
+      let modal = document.querySelector(".modal")
+      modal.style.display = "block"
+    },
+
+    closeModal(){
+      let modal = document.querySelector(".modal")
+      modal.style.display = "none"
+    },
+    addResto()  {
+      this.closeModal()
+      this.$emit('createdResto', this.newResto)
+
+    },
+  },
+  mounted() {
+
+  }
+}
+</script>
+
 <style scoped>
+.modal {
+  display: none;
+  position: fixed;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  margin: auto;
+  width: 75%;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
 .list {
   width: 20vw;
   height: 93vh;

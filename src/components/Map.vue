@@ -23,7 +23,7 @@ export default {
   name: "LeafletMap",
 
   created() {
-    console.log(this.listDistanceTime)
+
   },
   data() {
     return {
@@ -53,8 +53,10 @@ export default {
         new Restaurant("Sens Uniques", [48.88975, 2.33394]),
         new Restaurant("Mensae", [48.87572, 2.38572]),
         new Restaurant("Polpo", [48.90018, 2.28078])],
+      userRestaurant: [],
       polylines: [],
       polylinesPerso: [],
+      markerResto: [],
       endPointCoord: [48.85385, 2.34822],
       baseSpeed: 5, //km-h
       endTime: 13.5// 112min 1h52 = 1.86 11.14 == 11h08
@@ -62,6 +64,37 @@ export default {
     };
   },
   methods: {
+    updatePersoResto(listDistanceTime){
+      this.userRestaurant = []
+
+      listDistanceTime.forEach(elem => {
+        this.userRestaurant.push([elem["User"], elem["Resto"]])
+      })
+      this.polylines.forEach((e, index) => {
+        this.map.removeLayer(e)
+      })
+      this.polylinesPerso.forEach((e, index) => {
+        this.map.removeLayer(e)
+      })
+      this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, this.endPointCoord, this.baseSpeed)
+      this.$emit('getListPersoResto', this.listDistanceTime)
+    },
+    loadRestaurant(){
+      this.markerResto.forEach(marker =>{
+        marker.remove()
+      });
+      const foodIcon = L.icon({
+        iconUrl: food,
+        iconSize: [35, 35],
+      });
+      this.restaurants.forEach(resto => {
+        this.markerResto.push(L.marker(resto.coord, {icon: foodIcon}).bindTooltip(resto.name, {
+          permanent: false,
+          offset: [0, 0]
+        }).addTo(this.map));
+      })
+
+    },
     convertTime: function convertNumToTime(number) {
       let sign = (number >= 0) ? 1 : -1;
       number = number * sign;
@@ -153,17 +186,14 @@ export default {
     const canvasRenderer = L.canvas({pane: "customPane"});
     customPane.style.zIndex = 399; // put just behind the standard overlay pane which is at 400
 
-    const foodIcon = L.icon({
-      iconUrl: food,
-      iconSize: [35, 35],
-    });
+
 
     const endPointIcon = L.icon({
       iconUrl: endPoint,
       iconSize: [40, 40],
     });
 
-    const userRestaurant = []
+
 
 
     this.users.forEach(user => {
@@ -171,15 +201,10 @@ export default {
         permanent: false,
         offset: [0, 0]
       }).addTo(this.map);
-      userRestaurant.push([user, this.restaurants[Math.floor(Math.random() * this.restaurants.length)]])
+      this.userRestaurant.push([user, this.restaurants[Math.floor(Math.random() * this.restaurants.length)]])
     })
 
-    this.restaurants.forEach(resto => {
-      L.marker(resto.coord, {icon: foodIcon}).bindTooltip(resto.name, {
-        permanent: false,
-        offset: [0, 0]
-      }).addTo(this.map);
-    })
+    this.loadRestaurant()
 
     let endpointMarker = L.marker(this.endPointCoord, {
       icon: endPointIcon,
@@ -188,25 +213,20 @@ export default {
     }).addTo(this.map)
 
     endpointMarker.on('dragend', (event) => {
+      this.endPointCoord = endpointMarker.getLatLng()
       this.polylines.forEach((e, index) => {
         this.map.removeLayer(e)
       })
-      this.map, this.listDistanceTime = this.drawLines(userRestaurant, this.map, [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng], this.baseSpeed)
+      this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng], this.baseSpeed)
       this.$emit('getListPersoResto', this.listDistanceTime)
+
     });
 
 
+    this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, this.endPointCoord, this.baseSpeed)
 
-
-
-
-
-
-
-
-
-    this.map, this.listDistanceTime = this.drawLines(userRestaurant, this.map, this.endPointCoord, this.baseSpeed)
     this.$emit('getListPersoResto', this.listDistanceTime)
+    this.$emit('getListResto', this.restaurants)
 
 
   },
@@ -221,6 +241,7 @@ export default {
 
 <style scoped>
 #mapContainer {
+  z-index: 1;
   width: 50vw;
   height: 93vh;
 }

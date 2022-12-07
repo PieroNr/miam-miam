@@ -9,12 +9,29 @@ import ListRestaurants from '@/components/ListRestaurants.vue'
     components: {ListRestaurants, Map, ListUsers},
     data() {
       return {
-        listUsersResto: []
+        listUsersResto: [],
+        listResto: [],
+
       }
     },
     methods: {
       getListPerso(list) {
         this.listUsersResto = list;
+
+      },
+      getListResto(list) {
+        this.listResto = list;
+
+      },
+      pushCreatedResto(resto) {
+        this.listResto.push(resto)
+        this.$refs.map.loadRestaurant()
+
+
+      },
+      pushUpdateUserResto(listUserResto){
+        this.listUsersResto = listUserResto
+        this.$refs.map.updatePersoResto(this.listUsersResto)
       }
     }
   }
@@ -24,8 +41,8 @@ import ListRestaurants from '@/components/ListRestaurants.vue'
 
 <template>
   <div class="container">
-    <ListRestaurants></ListRestaurants>
-    <Map @getListPersoResto="getListPerso($event)"></Map>
+    <ListRestaurants :listUsersResto="listUsersResto" :listResto="listResto" @created-resto="pushCreatedResto" @update-user-resto="pushUpdateUserResto"></ListRestaurants>
+    <Map @getListPersoResto="getListPerso($event)" @getListResto="getListResto($event)" ref="map"></Map>
     <ListUsers :listUsersResto="listUsersResto"/>
   </div>
 
