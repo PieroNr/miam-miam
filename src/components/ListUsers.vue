@@ -12,11 +12,6 @@
         <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
       </div>
     </div>
-
-    <button class="button">
-      <img class="icon-plus" src="@/assets/img/plus.png" alt="">
-      <span class="button-text">Ajouter un restaurant</span>
-    </button>
   </div>
 </template>
 
@@ -66,29 +61,6 @@ h3 {
 .list-users-name {
   font-weight: 600;
   margin-bottom: 6px;
-}
-
-.button {
-  display: flex;
-  align-items: center;
-  border: none;
-  padding: 12px;
-  margin: 16px 0;
-  cursor: pointer;
-  background: none;
-}
-
-.icon-plus {
-  width: 12px;
-  height: 12px;
-  margin-right: 6px;
-}
-
-.button-text {
-  font-size: 13px;
-  font-weight: 700 !important;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .rad-label {
