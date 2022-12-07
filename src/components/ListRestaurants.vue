@@ -2,25 +2,26 @@
 
 <template>
   <div v-if="listResto && listUsersResto" class="list">
-    <h3>Liste des restaurants</h3>
-    <label v-for="resto in listResto" class="rad-label">
-      <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
-      <div class="rad-design"></div>
-      <div class="rad-text">{{ resto._name }}</div>
-    </label>
-    
-    <button v-on:click="showModal" class="button">
-      <img class="icon-plus" src="@/assets/img/plus.png" alt="">
-      <span class="button-text">Ajouter un restaurant</span>
-    </button>
-    <div class="modal">
-      <div class="modal-content">
-        <span v-on:click="closeModal" class="close-btn">&times;</span>
-        <input type="text" v-model="newResto.name" placeholder="Nom" />
-        <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
-        <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
-        <button v-on:click="addResto">Ajouter Resto</button>
-
+    <div>
+      <h3>Liste des restaurants</h3>
+      <label v-for="resto in listResto" class="rad-label">
+        <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
+        <div class="rad-design"></div>
+        <div class="rad-text">{{ resto._name }}</div>
+      </label>
+      
+      <button v-on:click="showModal" class="button">
+        <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+        <span class="button-text">Ajouter un restaurant</span>
+      </button>
+      <div class="modal">
+        <div class="modal-content">
+          <span v-on:click="closeModal" class="close-btn">&times;</span>
+          <input type="text" v-model="newResto.name" placeholder="Nom" />
+          <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
+          <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
+          <button v-on:click="addResto">Ajouter Resto</button>
+        </div>
       </div>
     </div>
     <div class="active-user">
@@ -110,7 +111,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   width: 20vw;
-  height: 93vh;
+  height: 100vh;
   padding: 2rem;
 }
 
