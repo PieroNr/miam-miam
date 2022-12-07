@@ -22,7 +22,9 @@ import benoit from "@/assets/img/avatar1.png";
 import akim from "@/assets/img/avatar2.png";
 import sophie from "@/assets/img/avatar3.png";
 import food from "@/assets/img/food.png";
-import endPoint from "@/assets/img/end-point.png"
+import endPoint from "@/assets/img/end-point.png";
+import SocketioService from "@/services/socketio.service";
+
 
 
 export default {
@@ -78,9 +80,11 @@ export default {
       })
       this.polylines.forEach((e, index) => {
         this.map.removeLayer(e)
+        this.polylines.splice(1,index)
       })
       this.polylinesPerso.forEach((e, index) => {
         this.map.removeLayer(e)
+        this.polylinesPerso.splice(1,index)
       })
       this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, this.endPointCoord, this.baseSpeed)
       this.$emit('getListPersoResto', this.listDistanceTime)
@@ -216,12 +220,24 @@ export default {
       autoPan: true,
     }).addTo(this.map)
 
+    SocketioService.socket.on('changeFinish', (finish) => {
+      this.endPointCoord = finish
+      endpointMarker.setLatLng(finish)
+      this.polylines.forEach((e, index) => {
+        this.map.removeLayer(e)
+      })
+      this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng], this.baseSpeed)
+      this.$emit('getListPersoResto', this.listDistanceTime)
+
+    });
+
     endpointMarker.on('dragend', (event) => {
       this.endPointCoord = endpointMarker.getLatLng()
       this.polylines.forEach((e, index) => {
         this.map.removeLayer(e)
       })
       this.map, this.listDistanceTime = this.drawLines(this.userRestaurant, this.map, [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng], this.baseSpeed)
+      SocketioService.socket.emit('changeFinish', this.endPointCoord);
       this.$emit('getListPersoResto', this.listDistanceTime)
 
     });

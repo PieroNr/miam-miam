@@ -12,12 +12,16 @@
         <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
       </div>
     </div>
+  <Chat></Chat>
   </div>
 </template>
 
 <script>
+import Chat from "@/components/Chat.vue";
+
 
 export default {
+  components: {Chat},
   name: "ListUsers",
   props: ['listUsersResto'],
 

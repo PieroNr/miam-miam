@@ -1,12 +1,29 @@
 <script>
 
+
 import Map from './components/Map.vue'
 import ListUsers from "@/components/ListUsers.vue";
-import ListRestaurants from '@/components/ListRestaurants.vue'
-
+import ListRestaurants from '@/components/ListRestaurants.vue';
+import SocketioService from './services/socketio.service.js';
+import User from "@/assets/script/User";
+import L from "leaflet";
+import benoit from "@/assets/img/avatar1.png";
 
   export default {
     components: {ListRestaurants, Map, ListUsers},
+    created() {
+      SocketioService.setupSocketConnection();
+
+      localStorage.setItem('currentUser', JSON.stringify(new User("Benoit", "CHEVALLIER", [48.86, 2.33], L.icon({
+        iconUrl: benoit,
+        iconSize: [35, 35],
+        startTime: 10}))))
+
+    },
+    beforeUnmount() {
+      SocketioService.disconnect();
+    },
+
     data() {
       return {
         listUsersResto: [],
