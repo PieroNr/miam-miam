@@ -16,13 +16,21 @@ import ListUsers from "@/components/ListUsers.vue";
       }
     }
   }
+import ListRestaurants from './components/ListRestaurants.vue'
+
 </script>
 
 <template>
   <Map @getListPersoResto="getListPerso($event)"></Map>
   <ListUsers :listUsersResto="listUsersResto"/>
+  <div class="container">
+    <ListRestaurants></ListRestaurants>
+    <Map></Map>
+  </div>
 </template>
 
-<style>
-
+<style scoped>
+.container {
+  display: flex;
+}
 </style>
