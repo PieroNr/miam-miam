@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="active-user">
-      <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
+      <img class="icon-avatar" src="@/assets/img/avatars/avatar9.png" alt="">
       <div>
         <p class="active-user__name">Benoît CHEVALLIER</p>
         <p>{{ selectedResto.name != "" ? selectedResto.name : "Aucun restaurant"}}</p>
