@@ -1,62 +1,117 @@
-<script setup lang="ts">
-</script>
+
 
 <template>
-    <div class="list">
-      <div>
-        <h3>Liste des restaurants</h3>
-        <label class="rad-label">
-          <input type="radio" class="rad-input" name="rad">
-          <div class="rad-design"></div>
-          <div class="rad-text">La Table de Colette</div>
-        </label>
-        <label class="rad-label">
-          <input type="radio" class="rad-input" name="rad">
-          <div class="rad-design"></div>
-          <div class="rad-text">Sens Uniques</div>
-        </label>
-        <label class="rad-label">
-          <input type="radio" class="rad-input" name="rad">
-          <div class="rad-design"></div>
-          <div class="rad-text">6 New york</div>
-        </label>
-        <label class="rad-label">
-          <input type="radio" class="rad-input" name="rad">
-          <div class="rad-design"></div>
-          <div class="rad-text">Mensae</div>
-        </label>
-        <label class="rad-label">
-          <input type="radio" class="rad-input" name="rad">
-          <div class="rad-design"></div>
-          <div class="rad-text">Polpo</div>
-        </label>
-        <button class="button">
-          <img class="icon-plus" src="@/assets/img/plus.png" alt="">
-          <span class="button-text">Ajouter un restaurant</span>
-        </button>
-      </div>
-      <div class="active-user">
-        <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
-        <div>
-          <p class="active-user__name">Benoît CHEVALLIER</p>
-          <p>Aucun restaurant</p>
-        </div>
+  <div v-if="listResto && listUsersResto" class="list">
+    <h3>Liste des restaurants</h3>
+    <label v-for="resto in listResto" class="rad-label">
+      <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
+      <div class="rad-design"></div>
+      <div class="rad-text">{{ resto._name }}</div>
+    </label>
+    
+    <button v-on:click="showModal" class="button">
+      <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+      <span class="button-text">Ajouter un restaurant</span>
+    </button>
+    <div class="modal">
+      <div class="modal-content">
+        <span v-on:click="closeModal" class="close-btn">&times;</span>
+        <input type="text" v-model="newResto.name" placeholder="Nom" />
+        <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
+        <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
+        <button v-on:click="addResto">Ajouter Resto</button>
+
       </div>
     </div>
-      
+    <div class="active-user">
+      <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="">
+      <div>
+        <p class="active-user__name">Benoît CHEVALLIER</p>
+        <p>Aucun restaurant</p>
+      </div>
+    </div>
+  </div>
 </template>
 
+<script>
+import Restaurant from "@/assets/script/Restaurant";
+
+export default {
+  name: "ListRestaurants",
+  props: {listResto: [], listUsersResto: []},
+  data() {
+    return {
+      newResto: new Restaurant("", []),
+      selectedResto: new Restaurant("", [])
+
+    }
+
+  },
+  methods: {
+    changeSelectedResto(){
+      this.listUsersResto.forEach((userResto, index) => {
+        if(userResto["User"]._FirstName == "Benoit"){
+          this.listUsersResto[index]["Resto"] = this.selectedResto
+          this.$emit('updateUserResto', this.listUsersResto)
+          return
+        }
+
+      })
+    },
+    showModal(){
+      let modal = document.querySelector(".modal")
+      modal.style.display = "block"
+    },
+
+    closeModal(){
+      let modal = document.querySelector(".modal")
+      modal.style.display = "none"
+    },
+    addResto()  {
+      this.closeModal()
+      this.$emit('createdResto', this.newResto)
+
+    },
+  },
+  mounted() {
+
+  }
+}
+</script>
+
 <style scoped>
+.modal {
+  display: none;
+  position: fixed;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.modal-content {
+  position: relative;
+  background-color: white;
+  padding: 20px;
+  margin: auto;
+  width: 75%;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
 .list {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 20vw;
-  height: 100vh;
+  height: 93vh;
   padding: 2rem;
-  background-color: white;
-  z-index: 2;
-  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
 .active-user {
@@ -157,6 +212,29 @@ h3 {
 
 .rad-input:checked~.rad-text {
   color: hsl(0, 0%, 8%);
+}
+
+.active-user {
+  display: flex;
+  align-items: center;
+  background: hsla(0, 0%, 80%, .14);
+  margin: 10px 0;
+  border-radius: 24px;
+  padding: 18px;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.active-user__name {
+  font-weight: 700;
+  font-size: 16px;
+  color: hsl(0, 0%, 8%);
+}
+
+.icon-avatar {
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
 }
 
 .button {
