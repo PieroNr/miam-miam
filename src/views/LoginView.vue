@@ -1,15 +1,8 @@
 <template>
   <div class="login">
-    <!-- <h1>This is a login pafeznks efz ez jefzkj efzk jze jefz je jezf jzej ezgk jze jegz jegz jezg jzeg je gez gz  egz jez jgjeq jb,e qlkg zeqklfnkzlqngirznfkznkgnzkengkizenfkiznfkenzf f ze gzlke ge</h1> -->
-    <!-- <select class="my-select">
-      <option style="background-image: url('@/assets/img/flag.png');">Adnan Sagar</option>
-      <option selected="selected" data-img-src="img/rena.png">Rena Cugelman</option>
-      <option data-img-src="img/tavis.png">Tavis Lochhead</option>
-      <option data-img-src="img/brian.png">Brain Cugelman</option>
-    </select> -->
     <div class="login-form">
         <h3>Création de compte</h3>
-        <ul class="list-avatar">
+        <ul class="list-avatar" id="list">
           <li v-for="avatar in avatars">
             <img v-on:click="activeAvatar" class="icon-avatar" :src="avatar.name" alt="">
           </li>
@@ -35,8 +28,12 @@ export default {
     }
   },
   methods: {
-    activeAvatar(){
-      console.log("un avatar a été sélectionné ! on doit lui ajouter la classe icon-avatar-active")
+    activeAvatar(e){
+      var list = document.querySelectorAll('.icon-avatar');
+      list.forEach(elem => {
+        elem.classList.remove('icon-avatar-active');
+      })
+      e.target.classList.add('icon-avatar-active');
     }
   },
   mounted() {
@@ -89,8 +86,8 @@ export default {
 }
 
 .icon-avatar-active {
-  border: 3px solid cornflowerblue;
-  background-color: cornflowerblue;
+  border: 3px solid rebeccapurple;
+  background-color: rebeccapurple;
 }
 
 input {
