@@ -196,10 +196,8 @@ export default {
 
     const endPointIcon = L.icon({
       iconUrl: endPoint,
-      iconSize: [40, 40],
+      iconSize: [33, 50],
     });
-
-
 
 
     this.users.forEach(user => {
