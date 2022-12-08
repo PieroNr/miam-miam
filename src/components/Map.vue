@@ -18,9 +18,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import User from "@/assets/script/User";
 import Restaurant from "@/assets/script/Restaurant";
-import benoit from "@/assets/img/avatar1.png";
-import akim from "@/assets/img/avatar2.png";
-import sophie from "@/assets/img/avatar3.png";
+import benoit from "@/assets/img/avatars/avatar1.png";
+import akim from "@/assets/img/avatars/avatar2.png";
+import sophie from "@/assets/img/avatars/avatar3.png";
 import food from "@/assets/img/food.png";
 import endPoint from "@/assets/img/end-point.png"
 
