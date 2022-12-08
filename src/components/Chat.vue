@@ -1,9 +1,11 @@
 <template>
   <div class="chat">
-    <p v-for="message in messages">
-      <span class="username">{{ user._FirstName }} </span>
-      : {{ message.message }}
-    </p>
+    <div class="chat-msg">
+      <p v-for="message in messages">
+        <span class="username">{{ user._FirstName }} </span>
+        : {{ message.message }}
+      </p>
+    </div>
     <input type="text" v-model="message" placeholder="Message">
     <button v-on:click="sendMessage(message)" class="button">
       <span class="button-text">Envoyer</span>
@@ -57,6 +59,13 @@ input {
   margin-bottom: 16px;
   font-size: 16px;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.chat-msg {
+  overflow-y: scroll;
+  padding-right: 24px;
+  margin-bottom: 18px;
+  height: 220px;
 }
 
 .button {
