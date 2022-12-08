@@ -1,17 +1,22 @@
-
-
 <template>
   <div v-if="listResto && listUsersResto" class="list">
     <div>
       <h3>Liste des restaurants</h3>
       <label v-for="resto in listResto" class="rad-label">
-        <input type="radio" v-on:change="changeSelectedResto" v-model="selectedResto" class="rad-input" name="rad" :value="resto">
+        <input
+          type="radio"
+          v-on:change="changeSelectedResto"
+          v-model="selectedResto"
+          class="rad-input"
+          name="rad"
+          :value="resto"
+        />
         <div class="rad-design"></div>
         <div class="rad-text">{{ resto._name }}</div>
       </label>
-      
+
       <button v-on:click="showModal" class="button">
-        <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+        <img class="icon-plus" src="@/assets/img/plus.png" alt="" />
         <span class="button-text">Ajouter un restaurant</span>
       </button>
       <div class="modal">
@@ -32,8 +37,12 @@
     <div class="active-user">
       <img class="icon-avatar" src="@/assets/img/avatars/avatar9.png" alt="">
       <div>
-        <p class="active-user__name">Benoît CHEVALLIER</p>
-        <p>{{ selectedResto.name != "" ? selectedResto.name : "Aucun restaurant"}}</p>
+        <p class="active-user__name">{{ currentUser._FirstName }} {{ currentUser._LastName }}</p>
+        <p>
+          {{
+            selectedResto.name != "" ? selectedResto.name : "Aucun restaurant"
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -42,47 +51,53 @@
 <script>
 import Restaurant from "@/assets/script/Restaurant";
 
+
 export default {
   name: "ListRestaurants",
-  props: {listResto: [], listUsersResto: []},
+  props: { listResto: [], listUsersResto: [] },
   data() {
     return {
+      currentUser: JSON.parse(localStorage.getItem('currentUser')),
       newResto: new Restaurant("", []),
-      selectedResto: new Restaurant("", [])
+      selectedResto: new Restaurant("", []),
 
-    }
-
+    };
   },
   methods: {
-    changeSelectedResto(){
+    changeSelectedResto() {
+      console.log(this.listUsersResto)
       this.listUsersResto.forEach((userResto, index) => {
-        if(userResto["User"]._FirstName == "Benoit"){
-          this.listUsersResto[index]["Resto"] = this.selectedResto
-          this.$emit('updateUserResto', this.listUsersResto)
-          return
+        if (userResto["User"]._FirstName == "Benoit") {
+          this.listUsersResto[index]["Resto"] = this.selectedResto;
+
+          this.$emit("updateUserResto", this.listUsersResto);
+
+          return;
         }
-
-      })
+      });
     },
-    showModal(){
-      let modal = document.querySelector(".modal")
-      modal.style.display = "block"
+    showModal() {
+      let modal = document.querySelector(".modal");
+      modal.style.display = "block";
     },
 
-    closeModal(){
-      let modal = document.querySelector(".modal")
-      modal.style.display = "none"
-    },
-    addResto()  {
-      this.closeModal()
-      this.$emit('createdResto', this.newResto)
+    closeModal() {
+      let modal = document.querySelector(".modal");
+      let inputs = modal.querySelectorAll("input");
+      inputs.forEach((input) => {
+        this.newResto = new Restaurant("", []);
+        input.value = "";
+      });
 
+      modal.style.display = "none";
+    },
+    addResto() {
+      this.$emit("createdResto", this.newResto);
+      this.closeModal();
     },
   },
-  mounted() {
-
-  }
-}
+  mounted() {},
+};
 </script>
 
 <style scoped>
@@ -108,7 +123,7 @@ export default {
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 .close-btn {
@@ -130,7 +145,7 @@ export default {
 .active-user {
   display: flex;
   align-items: center;
-  background: hsla(0, 0%, 80%, .14);
+  background: hsla(0, 0%, 80%, 0.14);
   margin: 10px 0;
   border-radius: 24px;
   padding: 18px;
@@ -180,12 +195,12 @@ h3 {
   margin: 10px 0;
 
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .rad-label:hover,
 .rad-label:focus-within {
-  background: hsla(0, 0%, 80%, .14);
+  background: hsla(0, 0%, 80%, 0.14);
 }
 
 .rad-input {
@@ -203,12 +218,16 @@ h3 {
   height: 18px;
   border-radius: 100px;
 
-  background: linear-gradient(to right bottom, hsl(189, 97%, 62%), hsl(278, 85%, 54%));
+  background: linear-gradient(
+    to right bottom,
+    hsl(189, 97%, 62%),
+    hsl(278, 85%, 54%)
+  );
   position: relative;
 }
 
 .rad-design::before {
-  content: '';
+  content: "";
 
   display: inline-block;
   width: inherit;
@@ -217,10 +236,10 @@ h3 {
 
   background: hsl(0, 0%, 90%);
   transform: scale(1.1);
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.rad-input:checked+.rad-design::before {
+.rad-input:checked + .rad-design::before {
   transform: scale(0);
 }
 
@@ -233,17 +252,17 @@ h3 {
   font-weight: 600;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.rad-input:checked~.rad-text {
+.rad-input:checked ~ .rad-text {
   color: hsl(0, 0%, 8%);
 }
 
 .active-user {
   display: flex;
   align-items: center;
-  background: hsla(0, 0%, 80%, .14);
+  background: hsla(0, 0%, 80%, 0.14);
   margin: 10px 0;
   border-radius: 24px;
   padding: 18px;
