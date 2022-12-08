@@ -12,7 +12,9 @@
         <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
       </div>
     </div>
-  <Chat></Chat>
+    <div class="chat-container">
+
+    </div>
   </div>
 </template>
 
@@ -49,6 +51,7 @@ h3 {
   letter-spacing: 1px;
   font-size: 18px;
   margin-bottom: 24px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 .flex {

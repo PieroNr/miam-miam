@@ -21,24 +21,21 @@
       </button>
       <div class="modal">
         <div class="modal-content">
-          <span v-on:click="closeModal" class="close-btn">&times;</span>
-          <input type="text" v-model="newResto.name" placeholder="Nom" />
-          <input
-            type="number"
-            v-model="newResto.coord[0]"
-            placeholder="Latitude"
-          />
-          <input
-            type="number"
-            v-model="newResto.coord[1]"
-            placeholder="Longitude"
-          />
-          <button v-on:click="addResto">Ajouter Resto</button>
+          <div style="width: 100%; display: flex; justify-content: flex-end;">
+            <span v-on:click="closeModal" class="close-btn">&times;</span>
+          </div>
+          <input type="text" v-model="newResto.name" placeholder="Nom du restaurant" />
+          <input type="number" v-model="newResto.coord[0]" placeholder="Latitude" />
+          <input type="number" v-model="newResto.coord[1]" placeholder="Longitude" />
+          <button v-on:click="addResto" class="button">
+            <img class="icon-plus" src="@/assets/img/plus.png" alt="">
+            <span class="button-text">Ajouter le restaurant</span>
+          </button>
         </div>
       </div>
     </div>
     <div class="active-user">
-      <img class="icon-avatar" src="@/assets/img/avatar9.png" alt="" />
+      <img class="icon-avatar" src="@/assets/img/avatars/avatar9.png" alt="">
       <div>
         <p class="active-user__name">{{ currentUser._FirstName }} {{ currentUser._LastName }}</p>
         <p>
@@ -107,7 +104,7 @@ export default {
 .modal {
   display: none;
   position: fixed;
-  padding-top: 50px;
+  padding-top: 12%;
   left: 0;
   top: 0;
   width: 100%;
@@ -120,13 +117,20 @@ export default {
 .modal-content {
   position: relative;
   background-color: white;
-  padding: 20px;
+  padding: 64px;
   margin: auto;
-  width: 75%;
+  width: 50%;
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s;
+}
+
+.close-btn {
+  font-size: 26px;
+  font-weight: 400;
+  margin-left: auto;
+  cursor: pointer;
 }
 
 .list {
@@ -161,6 +165,17 @@ export default {
   margin-right: 16px;
 }
 
+input {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 24px;
+  font-size: 16px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
 h3 {
   /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   font-weight: 700;
@@ -168,6 +183,7 @@ h3 {
   letter-spacing: 1px;
   font-size: 18px;
   margin-bottom: 24px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 .rad-label {
@@ -234,6 +250,7 @@ h3 {
   /* text-transform: uppercase; */
   font-size: 16px;
   font-weight: 600;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
   transition: 0.3s;
 }
@@ -257,6 +274,7 @@ h3 {
   font-weight: 700;
   font-size: 16px;
   color: hsl(0, 0%, 8%);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 .icon-avatar {
@@ -286,5 +304,6 @@ h3 {
   font-weight: 700 !important;
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 </style>

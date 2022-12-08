@@ -2,6 +2,7 @@
 
 
 import Map from './components/Map.vue'
+import LoginView from "@/views/LoginView.vue";
 import ListUsers from "@/components/ListUsers.vue";
 import ListRestaurants from '@/components/ListRestaurants.vue';
 import SocketioService from './services/socketio.service.js';
@@ -10,7 +11,6 @@ import L from "leaflet";
 import benoit from "@/assets/img/avatar1.png";
 
   export default {
-    components: {ListRestaurants, Map, ListUsers},
     created() {
       SocketioService.setupSocketConnection();
 
@@ -24,6 +24,7 @@ import benoit from "@/assets/img/avatar1.png";
       SocketioService.disconnect();
     },
 
+    components: {ListRestaurants, Map, ListUsers},
     data() {
       return {
         listUsersResto: [],
@@ -64,6 +65,7 @@ import benoit from "@/assets/img/avatar1.png";
     <ListRestaurants :listUsersResto="listUsersResto" :listResto="listResto" @created-resto="pushCreatedResto" @update-user-resto="pushUpdateUserResto"></ListRestaurants>
     <Map @getListPersoResto="getListPerso($event)" @getListResto="getListResto($event)" ref="map"></Map>
     <ListUsers :listUsersResto="listUsersResto"/>
+    <!-- <LoginView></LoginView> -->
   </div>
 
 
