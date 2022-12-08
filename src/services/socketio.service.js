@@ -4,18 +4,19 @@ class SocketioService {
     socket;
     constructor() {}
 
-    setupSocketConnection() {
+    setupSocketConnection(currentUser, room) {
         this.socket = io('http://localhost:3000', {
             auth: {
                 token: 'test'
             }});
         this.socket.on("connect", connectedUsers => {
-            this.socket.emit('newUser', JSON.parse(localStorage.getItem('currentUser')))
+            this.socket.emit('join', room, JSON.parse(currentUser))
 
         })
     }
-    disconnect() {
+    disconnect(currentUser, room) {
         if (this.socket) {
+
             this.socket.disconnect();
         }
     }

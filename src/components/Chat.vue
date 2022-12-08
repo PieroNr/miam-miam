@@ -1,7 +1,12 @@
 <template>
   <div>
 
-    <p v-for="message in messages">{{ user._FirstName }} : {{ message.message }}</p>
+
+    <p :class="message.user ? 'user-message' : 'bot-message' + ' ' +message.status" v-for="message in messages">
+      <span v-if="message.user">{{ message.user._FirstName }} : </span>
+      <span>{{ message.message }}</span>
+    </p>
+
     <input type="text" v-model="message" placeholder="Message">
     <button v-on:click="sendMessage(message)">Envoyer</button>
   </div>
@@ -9,26 +14,31 @@
 
 <script>
 
-import io from 'socket.io-client';
+
 import SocketioService from '../services/socketio.service.js';
+import {mapWritableState} from "pinia/dist/pinia";
+import {useMiamStore} from "@/components/store";
 
 export default {
   name: "Chat",
   data() {
     return {
-      user: JSON.parse(localStorage.getItem('currentUser')) ,
       message: '',
       messages: [],
 
     }
   },
+  computed: {
+    ...mapWritableState(useMiamStore, ['user', 'room'])
+  },
   methods: {
     sendMessage(e) {
-      console.log(this.user)
+
 
       SocketioService.socket.emit('SEND_MESSAGE', {
         user: this.user,
-        message: this.message
+        message: this.message,
+        room: this.room
       });
       this.message = ''
     }
@@ -36,6 +46,7 @@ export default {
   mounted() {
     SocketioService.socket.on('MESSAGE', (data) => {
       this.messages = [...this.messages, data];
+      console.log(data)
 
     });
   }
@@ -43,5 +54,16 @@ export default {
 </script>
 
 <style scoped>
+.bot-message{
+  background-color: palegreen;
+}
+
+.join {
+  background-color: palegreen;
+}
+
+.leave {
+  background-color: red;
+}
 
 </style>

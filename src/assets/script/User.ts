@@ -1,12 +1,15 @@
 import L from "leaflet";
 import sophie from "@/assets/img/avatar3.png";
+import {v4 as uuid } from 'uuid';
 export default class User {
+    public id: string = uuid()
     private _FirstName: string;
     private _LastName: string;
     private _coord: [number, number] = [0,0]
 
     private _icon: L.Icon = L.icon({
         iconUrl: "",
+        iconSize: [35, 35],
     });
     private _startTime: number = 0
 

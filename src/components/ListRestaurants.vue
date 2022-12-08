@@ -35,12 +35,12 @@
       </div>
     </div>
     <div class="active-user">
-      <img class="icon-avatar" src="@/assets/img/avatars/avatar9.png" alt="">
+      <img class="icon-avatar" :src="user._icon.options.iconUrl" alt="">
       <div>
-        <p class="active-user__name">{{ currentUser._FirstName }} {{ currentUser._LastName }}</p>
+        <p class="active-user__name">{{ user._FirstName }} {{ user._LastName }}</p>
         <p>
           {{
-            selectedResto.name != "" ? selectedResto.name : "Aucun restaurant"
+            selectedResto.name !== "" ? selectedResto.name : "Aucun restaurant"
           }}
         </p>
       </div>
@@ -50,24 +50,32 @@
 
 <script>
 import Restaurant from "@/assets/script/Restaurant";
+import {mapWritableState} from "pinia/dist/pinia";
+import {useMiamStore} from "@/components/store";
 
 
 export default {
   name: "ListRestaurants",
-  props: { listResto: [], listUsersResto: [] },
+  props: { listResto: {type : Array, default : () => []}, listUsersResto: {type : Array, default : () => []} },
   data() {
     return {
-      currentUser: JSON.parse(localStorage.getItem('currentUser')),
+
       newResto: new Restaurant("", []),
       selectedResto: new Restaurant("", []),
 
     };
   },
+  computed: {
+    ...mapWritableState(useMiamStore, ['user', 'room'])
+  },
   methods: {
     changeSelectedResto() {
-      console.log(this.listUsersResto)
+
+
       this.listUsersResto.forEach((userResto, index) => {
-        if (userResto["User"]._FirstName == "Benoit") {
+        console.log(userResto)
+        if (userResto["User"].id === this.user.id) {
+
           this.listUsersResto[index]["Resto"] = this.selectedResto;
 
           this.$emit("updateUserResto", this.listUsersResto);
