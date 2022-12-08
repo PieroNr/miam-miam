@@ -1,9 +1,14 @@
 <template>
-  <div>
-
-    <p v-for="message in messages">{{ user._FirstName }} : {{ message.message }}</p>
+  <div class="chat">
+    <p v-for="message in messages">
+      <span class="username">{{ user._FirstName }} </span>
+      : {{ message.message }}
+    </p>
     <input type="text" v-model="message" placeholder="Message">
-    <button v-on:click="sendMessage(message)">Envoyer</button>
+    <button v-on:click="sendMessage(message)" class="button">
+      <span class="button-text">Envoyer</span>
+      <img class="icon-chat" src="@/assets/img/send.png" alt="">
+    </button>
   </div>
 </template>
 
@@ -43,5 +48,40 @@ export default {
 </script>
 
 <style scoped>
+input {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid black;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
 
+.button {
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+
+.icon-chat {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+}
+
+.button-text {
+  font-size: 13px;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.username {
+  font-weight: 700 !important;
+}
 </style>
