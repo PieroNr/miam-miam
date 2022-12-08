@@ -65,8 +65,6 @@ export default {
   }
 }
 
-
-
 </script>
 
 
@@ -98,8 +96,8 @@ export default {
 }
 
 .icon-avatar {
-  width: 60px;
-  height: 60px;
+  width: 75px;
+  height: 75px;
   margin: 4px;
   cursor: pointer;
   border-radius: 50%;
