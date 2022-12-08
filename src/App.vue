@@ -42,12 +42,15 @@ import benoit from "@/assets/img/avatar1.png";
       },
       pushCreatedResto(resto) {
         this.listResto.push(resto)
+        SocketioService.socket.emit('addResto', resto);
         this.$refs.map.loadRestaurant()
 
 
       },
       pushUpdateUserResto(listUserResto){
         this.listUsersResto = listUserResto
+
+        SocketioService.socket.emit('changeResto', this.listUsersResto);
         this.$refs.map.updatePersoResto(this.listUsersResto)
       }
     }

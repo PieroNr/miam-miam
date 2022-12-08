@@ -11,7 +11,7 @@ class SocketioService {
             }});
         this.socket.on("connect", connectedUsers => {
             this.socket.emit('newUser', JSON.parse(localStorage.getItem('currentUser')))
-            console.log(connectedUsers)
+
         })
     }
     disconnect() {
