@@ -45,13 +45,14 @@ export default {
         new Restaurant("Polpo", [48.90, 2.28])
       ],
       userRestaurant: [],
+      currentCoord:[],
       polylines: [],
       polylinesPerso: [],
       markerResto: [],
       endPointCoord: [48.85385, 2.34822],
       endpointMarker: null,
       baseSpeed: 5, //km-h
-      endTime: 13.5, // 112min 1h52 = 1.86 11.14 == 11h08
+      endTime: 13.5, //
 
     };
   },
@@ -70,7 +71,7 @@ export default {
         var listCurrent = this.listDistanceTime.find((e => (e["User"].id === user.id)))
 
         if(listCurrent){
-          console.log("VWLIUFGHQIOUGRIUR")
+
           this.userRestaurant.push([
             user,
             listCurrent["Resto"],
@@ -157,7 +158,7 @@ export default {
       return sign + hour + ":" + minute;
     },
     drawLines(userResto, endPoint, speed) {
-      console.log(userResto)
+
       const listDistanceTime = this.calculateDistanceTime(
           userResto,
           endPoint,
@@ -209,7 +210,7 @@ export default {
       const listDistance = [];
 
       userResto.forEach((asso) => {
-        console.log(asso)
+
         if (asso[1]) {
 
           const distpr = this.getDistance(asso[0]._coord, asso[1]._coord);
@@ -260,6 +261,17 @@ export default {
     toRadian(degree) {
       return (degree * Math.PI) / 180;
     },
+
+    successGeo(position) {
+      this.currentCoord[0]  = position.coords.latitude
+      this.currentCoord[1] = position.coords.longitude
+      if(this.currentCoord.length > 0){
+        SocketioService.socket.emit('changeUserCoord', this.room, this.user, this.currentCoord)
+
+      }
+
+
+}
   },
   computed: {
     ...mapWritableState(useMiamStore, ['user', 'room'])
@@ -285,10 +297,16 @@ export default {
     const canvasRenderer = L.canvas({pane: "customPane"});
     customPane.style.zIndex = 399; // put just behind the standard overlay pane which is at 400
 
+    // setInterval(event => {
+    //   navigator.geolocation.getCurrentPosition( e => {
+    //     this.successGeo(e)
+    //   })
+    // }, 5000);
 
     socketioService.socket.on('updateRoom', room => {
-      console.log("room", room)
+
       const usersRoom = []
+      this.endTime = room.endTime
 
       room.users.forEach(e => {
         usersRoom.push(e[0])
@@ -313,7 +331,7 @@ export default {
         this.endpointMarker.getLatLng().lng,
       ];
       SocketioService.socket.emit("changeFinish", this.room, this.endPointCoord);
-      console.log("coucou", this.userRestaurant)
+
 
     });
 
@@ -335,7 +353,7 @@ export default {
     });
 
     SocketioService.socket.on("changeResto", (listPersoResto) => {
-      console.log("list", listPersoResto)
+
       this.listDistanceTime = this.calculateDistanceTime(listPersoResto, this.endPointCoord, this.baseSpeed)
       this.updatePersoResto(this.listDistanceTime)
     });

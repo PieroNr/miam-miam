@@ -9,7 +9,14 @@
         </ul>
         <input type="text" v-model="currentUser.FirstName" placeholder="Prénom">
         <input type="text" v-model="currentUser.LastName" placeholder="Nom">
-
+        <div style="display: flex; align-items: baseline">
+          <input type="number" v-model="currentUser.coord[0]" placeholder="Latitude">
+          <input type="number" v-model="currentUser.coord[1]" placeholder="Longitude">
+          <button class="button">
+            <span v-on:click="getPosition" class="button-text">Ma position</span>
+            <img class="icon-position" src="" alt="">
+          </button>
+        </div>
         <input type="text" v-model="roomId" placeholder="Nom de la room à rejoindre">
         <button v-on:click="connectToRoom" class="button">
           <span class="button-text">Connexion</span>
@@ -31,7 +38,7 @@ export default {
   data() {
     return {
       avatars: [],
-      currentUser: new User("", "", [48.85, 2.34], L.icon({
+      currentUser: new User("", "", [], L.icon({
         iconUrl: "",
         iconSize: [35, 35],
       }), 0),
@@ -57,6 +64,12 @@ export default {
       e.target.classList.add('icon-avatar-active');
 
       this.currentUser.icon.options.iconUrl = e.target.src
+    },
+    getPosition(){
+      navigator.geolocation.getCurrentPosition(e => {
+        this.currentUser.coord[0] = e.coords.latitude
+        this.currentUser.coord[1] = e.coords.longitude
+      })
     }
   },
   mounted() {

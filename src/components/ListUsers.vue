@@ -7,6 +7,10 @@
         <img class="icon" src="@/assets/img/resto.png" alt="">
         <p>{{userDetails["Resto"] ? userDetails["Resto"]["_name"] : "Pas de choix"}}</p>
       </div>
+      <div class="flex">
+        <img class="icon" src="@/assets/img/flag.png" alt="">
+        <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
+      </div>
     </div>
     <div class="chat-container">
       <h3 class="title-small">Chat Room</h3>

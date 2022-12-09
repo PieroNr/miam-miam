@@ -2,13 +2,10 @@
 
 
 import Map from '@/components/Map.vue'
-import LoginView from "@/views/LoginView.vue";
+
 import ListUsers from "@/components/ListUsers.vue";
 import ListRestaurants from '@/components/ListRestaurants.vue';
 import SocketioService from '@/services/socketio.service.js';
-import User from "@/assets/script/User";
-import L from "leaflet";
-import benoit from "@/assets/img/avatar1.png";
 import {mapWritableState} from "pinia/dist/pinia";
 import {useMiamStore} from "@/components/store";
 

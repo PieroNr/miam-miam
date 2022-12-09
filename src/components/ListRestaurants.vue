@@ -73,7 +73,7 @@ export default {
 
 
       this.listUsersResto.forEach((userResto, index) => {
-        console.log(userResto)
+
         if (userResto["User"].id === this.user.id) {
 
           this.listUsersResto[index]["Resto"] = this.selectedResto;

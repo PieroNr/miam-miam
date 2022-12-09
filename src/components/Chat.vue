@@ -1,24 +1,22 @@
 <template>
   <div class="chat">
     <div class="chat-msg">
-      <p v-for="message in messages">
-        <span class="username">{{ user._FirstName }} </span>
-        : {{ message.message }}
+      <p :class="message.user ? 'user-message' : 'bot-message' + ' ' +message.status" v-for="message in messages">
+        <span class="username" v-if="message.user">{{ message.user._FirstName }} : </span>
+        <span>{{ message.message }}</span>
       </p>
     </div>
   <div>
 
 
-    <p :class="message.user ? 'user-message' : 'bot-message' + ' ' +message.status" v-for="message in messages">
-      <span v-if="message.user">{{ message.user._FirstName }} : </span>
-      <span>{{ message.message }}</span>
-    </p>
+
 
     <input type="text" v-model="message" placeholder="Message">
     <button v-on:click="sendMessage(message)" class="button">
       <span class="button-text">Envoyer</span>
       <img class="icon-chat" src="@/assets/img/send.png" alt="">
     </button>
+  </div>
   </div>
 </template>
 
@@ -56,7 +54,8 @@ export default {
   mounted() {
     SocketioService.socket.on('MESSAGE', (data) => {
       this.messages = [...this.messages, data];
-      console.log(data)
+      var chat = document.querySelector(".chat-msg");
+      chat.scrollTop = chat.scrollHeight;
 
     });
   }
@@ -85,6 +84,8 @@ input {
   height: 220px;
 }
 
+
+
 .button {
   display: flex;
   align-items: center;
@@ -110,12 +111,22 @@ input {
 .username {
   font-weight: 700 !important;
 }
+
+.bot-message {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
 .join {
-  background-color: palegreen;
+  background-color: #baffba;
 }
 
 .leave {
-  background-color: red;
+  background-color: #ffb8b2;
+}
+
+.change {
+  background-color: #ffab65;
 }
 
 </style>
