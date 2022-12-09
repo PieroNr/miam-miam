@@ -1,19 +1,15 @@
 <template>
   <div v-if="listUsersResto" class="list-users">
-    <div>
-      <h3>Suivi des trajets</h3>
-      <div class="list-all-users">
-        <div class="list-users__item" v-for="userDetails in listUsersResto">
-          <p class="list-users-name">{{userDetails["User"]["_FirstName"]}} {{userDetails["User"]["_LastName"]}}</p>
-          <div class="flex">
-            <img class="icon" src="@/assets/img/resto.png" alt="">
-            <p>{{userDetails["Resto"]["_name"]}}</p>
-          </div>
-          <div class="flex">
-            <img class="icon" src="@/assets/img/flag.png" alt="">
-            <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
-          </div>
-        </div>
+    <h3>Suivi des trajets</h3>
+    <div class="list-users__item" v-for="(userDetails, i) in listUsersResto" :key="i">
+      <p class="list-users-name">{{userDetails["User"]["_FirstName"]}} {{userDetails["User"]["_LastName"]}}</p>
+      <div class="flex">
+        <img class="icon" src="@/assets/img/resto.png" alt="">
+        <p>{{userDetails["Resto"] ? userDetails["Resto"]["_name"] : "Pas de choix"}}</p>
+      </div>
+      <div class="flex">
+        <img class="icon" src="@/assets/img/flag.png" alt="">
+        <p>Arrive dans {{ Math.trunc(userDetails["Time"])}} minutes</p>
       </div>
     </div>
     <div class="chat-container">
@@ -30,7 +26,7 @@ import Chat from "@/components/Chat.vue";
 export default {
   components: {Chat},
   name: "ListUsers",
-  props: ['listUsersResto'],
+  props: {listUsersResto: {type : Array, default : () => []} },
 
 
   mounted() {

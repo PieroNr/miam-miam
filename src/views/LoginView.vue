@@ -7,11 +7,18 @@
             <img v-on:click="activeAvatar" class="icon-avatar" :src="avatar.name" alt="">
           </li>
         </ul>
-        <input type="text" placeholder="Prénom et Nom">
-        <input type="text" placeholder="Latitude">
-        <input type="text" placeholder="Longitude">
-        <input type="text" placeholder="Nom de la room à rejoindre">
-        <button class="button">
+        <input type="text" v-model="currentUser.FirstName" placeholder="Prénom">
+        <input type="text" v-model="currentUser.LastName" placeholder="Nom">
+        <div style="display: flex; align-items: baseline">
+          <input type="number" v-model="currentUser.coord[0]" placeholder="Latitude">
+          <input type="number" v-model="currentUser.coord[1]" placeholder="Longitude">
+          <button class="button">
+            <span v-on:click="getPosition" class="button-text">Ma position</span>
+            <img class="icon-position" src="" alt="">
+          </button>
+        </div>
+        <input type="text" v-model="roomId" placeholder="Nom de la room à rejoindre">
+        <button v-on:click="connectToRoom" class="button">
           <span class="button-text">Connexion</span>
           <img class="icon-plus" src="@/assets/img/lock.png" alt="">
         </button>
@@ -20,25 +27,54 @@
 </template>
 
 <script>
+import User from "@/assets/script/User";
+import L from "leaflet";
+import SocketioService from "@/services/socketio.service";
+import {useMiamStore} from "@/components/store";
+import {mapWritableState} from "pinia/dist/pinia";
+
 export default {
   name: "Login",
   data() {
     return {
-      avatars: []
+      avatars: [],
+      currentUser: new User("", "", [], L.icon({
+        iconUrl: "",
+        iconSize: [35, 35],
+      }), 0),
+      roomId: ""
     }
   },
+  computed: {
+    ...mapWritableState(useMiamStore, ['user', 'room'])
+  },
   methods: {
+    connectToRoom(){
+      this.user = this.currentUser
+      this.room = this.roomId
+
+      SocketioService.setupSocketConnection(JSON.stringify(this.currentUser), this.roomId);
+      this.$router.push('/')
+    },
     activeAvatar(e){
       var list = document.querySelectorAll('.icon-avatar');
       list.forEach(elem => {
         elem.classList.remove('icon-avatar-active');
       })
       e.target.classList.add('icon-avatar-active');
+
+      this.currentUser.icon.options.iconUrl = e.target.src
+    },
+    getPosition(){
+      navigator.geolocation.getCurrentPosition(e => {
+        this.currentUser.coord[0] = e.coords.latitude
+        this.currentUser.coord[1] = e.coords.longitude
+      })
     }
   },
   mounted() {
     this.avatars = import.meta.glob('@/assets/img/avatars/*.png')
-    console.log(this.avatars)
+
   }
 }
 

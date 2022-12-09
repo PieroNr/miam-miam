@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "leaflet": "^1.9.3",
+    "pinia": "^2.0.27",
     "socket.io": "^4.5.4",
     "socket.io-client": "^4.5.4",
+    "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vue-socket.io": "^3.0.10",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/node": "^18.11.9",
+    "@types/uuid": "^9.0.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitejs/plugin-vue-jsx": "^2.1.1",
     "@vue-leaflet/vue-leaflet": "^0.6.1",

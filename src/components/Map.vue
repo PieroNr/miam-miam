@@ -2,7 +2,7 @@
   <div style="display: flex; flex-direction: column, position: relative">
     <div class="absolute-text">
       <div class="flex">
-        <img class="icon" src="@/assets/img/clock.png" alt="" />
+        <img class="icon" src="@/assets/img/clock.png" alt=""/>
         <h3>RDV à {{ convertTime(endTime) }}</h3>
       </div>
       <p v-for="dt in listDistanceTime">
@@ -19,54 +19,25 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import User from "@/assets/script/User";
 import Restaurant from "@/assets/script/Restaurant";
-import benoit from "@/assets/img/avatars/avatar1.png";
-import akim from "@/assets/img/avatars/avatar2.png";
-import sophie from "@/assets/img/avatars/avatar3.png";
 import food from "@/assets/img/food.png";
 import endPoint from "@/assets/img/end-point.png";
 import SocketioService from "@/services/socketio.service";
+import socketioService from "@/services/socketio.service";
+import {mapWritableState} from "pinia/dist/pinia";
+import {useMiamStore} from "@/components/store";
 
 
 export default {
   name: "LeafletMap",
 
-  created() {},
+  created() {
+
+  },
   data() {
     return {
       map: null,
       listDistanceTime: [],
-      users: [
-        new User(
-          "Benoit",
-          "CHEVALLIER",
-          [48.86, 2.33],
-          L.icon({
-            iconUrl: benoit,
-            iconSize: [35, 35],
-            startTime: 10,
-          })
-        ),
-        new User(
-          "Akim",
-          "DEBARBES",
-          [48.84, 2.35],
-          L.icon({
-            iconUrl: akim,
-            iconSize: [35, 35],
-            startTime: 0,
-          })
-        ),
-        new User(
-          "Sophie",
-          "FONFEQUE",
-          [48.85, 2.37],
-          L.icon({
-            iconUrl: sophie,
-            iconSize: [35, 35],
-            startTime: 0,
-          })
-        ),
-      ],
+      users: [],
       restaurants: [new Restaurant("La Table de Colette", [48.84, 2.34]),
         new Restaurant("6 New York", [48.86, 2.29]),
         new Restaurant("Sens Uniques", [48.88, 2.33]),
@@ -74,13 +45,59 @@ export default {
         new Restaurant("Polpo", [48.90, 2.28])
       ],
       userRestaurant: [],
+      currentCoord:[],
       polylines: [],
       polylinesPerso: [],
       markerResto: [],
       endPointCoord: [48.85385, 2.34822],
+      endpointMarker: null,
       baseSpeed: 5, //km-h
-      endTime: 13.5, // 112min 1h52 = 1.86 11.14 == 11h08
+      endTime: 13.5, //
+
     };
+  },
+  watch: {
+    users(newUsers) {
+      this.userRestaurant = []
+      newUsers.forEach((user) => {
+
+        const iconUser = L.icon(user._icon.options)
+        L.marker(user._coord, {icon: iconUser})
+            .bindTooltip(user._FirstName + " " + user._LastName, {
+              permanent: false,
+              offset: [0, 0],
+            })
+            .addTo(this.map);
+        var listCurrent = this.listDistanceTime.find((e => (e["User"].id === user.id)))
+
+        if(listCurrent){
+
+          this.userRestaurant.push([
+            user,
+            listCurrent["Resto"],
+          ]);
+        } else {
+          this.userRestaurant.push([
+            user,
+            null,
+          ]);
+        }
+
+      });
+    },
+    endPointCoord() {
+      this.endpointMarker.setLatLng(this.endPointCoord);
+      this.polylines.forEach((e, index) => {
+        this.map.removeLayer(e);
+      });
+
+      this.listDistanceTime = this.drawLines(
+          this.userRestaurant,
+          [this.endpointMarker.getLatLng().lat, this.endpointMarker.getLatLng().lng],
+          this.baseSpeed
+      )
+      this.$emit("getListPersoResto", this.listDistanceTime);
+    }
   },
   methods: {
     updatePersoResto(listDistanceTime) {
@@ -96,13 +113,12 @@ export default {
         this.map.removeLayer(e);
       });
 
-      this.map,
-        (this.listDistanceTime = this.drawLines(
+      this.listDistanceTime = this.drawLines(
           this.userRestaurant,
-          this.map,
           this.endPointCoord,
           this.baseSpeed
-        ));
+      );
+
 
       this.$emit("getListPersoResto", this.listDistanceTime);
     },
@@ -116,12 +132,12 @@ export default {
       });
       this.restaurants.forEach((resto) => {
         this.markerResto.push(
-          L.marker(resto.coord, { icon: foodIcon })
-            .bindTooltip(resto.name, {
-              permanent: false,
-              offset: [0, 0],
-            })
-            .addTo(this.map)
+            L.marker(resto.coord, {icon: foodIcon})
+                .bindTooltip(resto.name, {
+                  permanent: false,
+                  offset: [0, 0],
+                })
+                .addTo(this.map)
         );
       });
     },
@@ -141,18 +157,17 @@ export default {
       sign = sign === 1 ? "" : "-";
       return sign + hour + ":" + minute;
     },
-    drawLines(userResto, currentMap, endPoint, speed) {
+    drawLines(userResto, endPoint, speed) {
 
       const listDistanceTime = this.calculateDistanceTime(
-        userResto,
-        endPoint,
-        speed
+          userResto,
+          endPoint,
+          speed
       );
 
       userResto.forEach((asso, index) => {
-        if(asso[1]) {
-          const colorRandom = Math.floor(Math.random() * 16777215).toString(16);
-          console.log("coucou")
+        if (asso[1]) {
+          const colorRandom = Math.floor(Math.random() * 16777215).toString(16)
           this.polylinesPerso.push(
               L.polyline([asso[0]._coord, asso[1]._coord], {
                 color: String("#" + colorRandom),
@@ -166,7 +181,7 @@ export default {
                           " m\n"
                       )
                   )
-                  .addTo(currentMap)
+                  .addTo(this.map)
           );
 
           this.polylines.push(
@@ -182,19 +197,20 @@ export default {
                           " m\n"
                       )
                   )
-                  .addTo(currentMap)
+                  .addTo(this.map)
           );
         }
       });
 
 
       // this.$emit("getList", listDistanceTime)
-      return currentMap, listDistanceTime;
+      return listDistanceTime;
     },
     calculateDistanceTime(userResto, endpoint, speed) {
       const listDistance = [];
 
       userResto.forEach((asso) => {
+
         if (asso[1]) {
 
           const distpr = this.getDistance(asso[0]._coord, asso[1]._coord);
@@ -210,23 +226,32 @@ export default {
             Time: time,
           };
           listDistance.push(distances);
-      }
+        } else {
+          const distances = {
+            User: asso[0],
+            Resto: null,
+            "Distance-Perso-resto": 0,
+            "Distance-Resto-endpoint": 0,
+            Time: null,
+          };
+          listDistance.push(distances);
+        }
       });
       return listDistance;
     },
 
     getDistance(origin, destination) {
       const lon1 = this.toRadian(origin[1]),
-        lat1 = this.toRadian(origin[0]),
-        lon2 = this.toRadian(destination[1]),
-        lat2 = this.toRadian(destination[0]);
+          lat1 = this.toRadian(origin[0]),
+          lon2 = this.toRadian(destination[1]),
+          lat2 = this.toRadian(destination[0]);
 
       const deltaLat = lat2 - lat1;
       const deltaLon = lon2 - lon1;
 
       const a =
-        Math.pow(Math.sin(deltaLat / 2), 2) +
-        Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
+          Math.pow(Math.sin(deltaLat / 2), 2) +
+          Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
       const c = 2 * Math.asin(Math.sqrt(a));
       const EARTH_RADIUS = 6371;
 
@@ -236,90 +261,88 @@ export default {
     toRadian(degree) {
       return (degree * Math.PI) / 180;
     },
+
+    successGeo(position) {
+      this.currentCoord[0]  = position.coords.latitude
+      this.currentCoord[1] = position.coords.longitude
+      if(this.currentCoord.length > 0){
+        SocketioService.socket.emit('changeUserCoord', this.room, this.user, this.currentCoord)
+
+      }
+
+
+}
+  },
+  computed: {
+    ...mapWritableState(useMiamStore, ['user', 'room'])
   },
   mounted() {
     this.map = L.map("mapContainer").setView([48.86, 2.33], 13);
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.map);
     //use a mix of renderers
-    const customPane = this.map.createPane("customPane");
-    const canvasRenderer = L.canvas({ pane: "customPane" });
-    customPane.style.zIndex = 399; // put just behind the standard overlay pane which is at 400
-    const endPointIcon = L.icon({
-      iconUrl: endPoint,
-      iconSize: [33, 50],
-    });
 
-    this.users.forEach((user) => {
-      L.marker(user.coord, { icon: user.icon })
-        .bindTooltip(user.FirstName + " " + user.LastName, {
-          permanent: false,
-          offset: [0, 0],
-        })
-        .addTo(this.map);
-      this.userRestaurant.push([
-        user,
-        this.restaurants[Math.floor(Math.random() * this.restaurants.length)],
-      ]);
-    });
+    this.endpointMarker = L.marker(this.endPointCoord, {
+      icon: L.icon({
+        iconUrl: endPoint,
+        iconSize: [33, 50],
+      }),
+      draggable: true,
+      autoPan: true,
+    }).addTo(this.map),
+        this.endpointMarker.addTo(this.map)
+    const customPane = this.map.createPane("customPane");
+    const canvasRenderer = L.canvas({pane: "customPane"});
+    customPane.style.zIndex = 399; // put just behind the standard overlay pane which is at 400
+
+    // setInterval(event => {
+    //   navigator.geolocation.getCurrentPosition( e => {
+    //     this.successGeo(e)
+    //   })
+    // }, 5000);
+
+    socketioService.socket.on('updateRoom', room => {
+
+      const usersRoom = []
+      this.endTime = room.endTime
+
+      room.users.forEach(e => {
+        usersRoom.push(e[0])
+      })
+
+      this.listDistanceTime = this.calculateDistanceTime(room.users, room.endPoint, this.baseSpeed)
+      this.updatePersoResto(this.listDistanceTime);
+
+
+      this.endPointCoord = room.endPoint
+      this.users = usersRoom
+
+    })
+
 
     this.loadRestaurant();
 
-    let endpointMarker = L.marker(this.endPointCoord, {
-      icon: endPointIcon,
-      draggable: true,
-      autoPan: true,
-    }).addTo(this.map);
 
-    SocketioService.socket.on("changeFinish", (finish) => {
-      this.endPointCoord = finish;
-
-      endpointMarker.setLatLng(finish);
-      this.polylines.forEach((e, index) => {
-        this.map.removeLayer(e);
-      });
-
-      this.map,
-        (this.listDistanceTime = this.drawLines(
-          this.userRestaurant,
-          this.map,
-          [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng],
-          this.baseSpeed
-        ));
-      this.$emit("getListPersoResto", this.listDistanceTime);
-    });
-    console.log(this.listDistanceTime)
-
-    endpointMarker.on("dragend", (event) => {
+    this.endpointMarker.on("dragend", (event) => {
       this.endPointCoord = [
-        endpointMarker.getLatLng().lat,
-        endpointMarker.getLatLng().lng,
+        this.endpointMarker.getLatLng().lat,
+        this.endpointMarker.getLatLng().lng,
       ];
-      this.polylines.forEach((e, index) => {
-        this.map.removeLayer(e);
-      });
-      this.map,
-        (this.listDistanceTime = this.drawLines(
-          this.userRestaurant,
-          this.map,
-          [endpointMarker.getLatLng().lat, endpointMarker.getLatLng().lng],
-          this.baseSpeed
-        ));
-      SocketioService.socket.emit("changeFinish", this.endPointCoord);
-      this.$emit("getListPersoResto", this.listDistanceTime);
+      SocketioService.socket.emit("changeFinish", this.room, this.endPointCoord);
+
+
     });
 
-    this.map,
-      (this.listDistanceTime = this.drawLines(
+    this.listDistanceTime = this.drawLines(
         this.userRestaurant,
-        this.map,
+
         this.endPointCoord,
         this.baseSpeed
-      ));
+    );
 
-    this.$emit("getListPersoResto", this.listDistanceTime);
+
     this.$emit("getListResto", this.restaurants);
 
     SocketioService.socket.on("addResto", (resto) => {
@@ -330,7 +353,9 @@ export default {
     });
 
     SocketioService.socket.on("changeResto", (listPersoResto) => {
-      this.updatePersoResto(listPersoResto);
+
+      this.listDistanceTime = this.calculateDistanceTime(listPersoResto, this.endPointCoord, this.baseSpeed)
+      this.updatePersoResto(this.listDistanceTime)
     });
   },
   onBeforeUnmount() {
@@ -376,8 +401,8 @@ h3 {
   width: 30%;
   background-color: white;
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
-    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
   padding: 16px;
 }
 </style>
