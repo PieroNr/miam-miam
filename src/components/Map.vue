@@ -45,6 +45,7 @@ export default {
         new Restaurant("Polpo", [48.90, 2.28])
       ],
       userRestaurant: [],
+      userMarkers: [],
       currentCoord:[],
       polylines: [],
       polylinesPerso: [],
@@ -59,15 +60,19 @@ export default {
   watch: {
     users(newUsers) {
       this.userRestaurant = []
+      this.userMarkers.forEach((marker) => {
+        this.map.removeLayer(marker)
+      })
+      this.userMarkers = []
       newUsers.forEach((user) => {
 
         const iconUser = L.icon(user._icon.options)
-        L.marker(user._coord, {icon: iconUser})
+        this.userMarkers.push(L.marker(user._coord, {icon: iconUser})
             .bindTooltip(user._FirstName + " " + user._LastName, {
               permanent: false,
               offset: [0, 0],
             })
-            .addTo(this.map);
+            .addTo(this.map))
         var listCurrent = this.listDistanceTime.find((e => (e["User"].id === user.id)))
 
         if(listCurrent){
